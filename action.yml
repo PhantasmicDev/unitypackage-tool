@@ -1,17 +1,35 @@
-name: "Bash Action Template"
+name: "Unitypackage Tool"
 author: "PhantasmicDev"
-description: "A template with the bare minimum to begin developing a custom GitHub action that runs a bash script."
+description: "Pack or unpack .unitypackage files without the Unity editor or Unity project folder."
 branding:
-  icon: "file-text"
+  icon: "package"
   color: "white"
 
 inputs:
-  my-input:
-    description: "Input Example"
+  command:
+    description: "Chose between the 'pack' or 'unpack' command."
+    required: true
+  package:
+    description: "If packing, this is the package that will be generated, must end with '.unitypackage'. If unpacking this is the '.unitypackage' to extract."
+    required: true
+  pack-map:
+    description: "Key value entries of files/directories to pack and it's target location within the package."
+    required: false
+  unpack-directory:
+    description: "The location where the package content will be extracted to."
     required: false
 
 runs:
   using: "composite"
   steps:
+    - uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '3.1.x'
+
     - run: $GITHUB_ACTION_PATH/run.sh
       shell: bash
+      with:
+        INPUT_COMMAND: ${{ inputs.command }}
+        INPUT_PACKAGE: ${{ inputs.package }}
+        INPUT_PACK_MAP: ${{ inputs.pack-map }}
+        INPUT_UNPACK_DIRECTORY: ${{ inputs.unpack-directory }}
