@@ -28,7 +28,7 @@ runs:
 
     - run: $GITHUB_ACTION_PATH/run.sh
       shell: bash
-      with:
+      env:
         INPUT_COMMAND: ${{ inputs.command }}
         INPUT_PACKAGE: ${{ inputs.package }}
         INPUT_PACK_MAP: ${{ inputs.pack-map }}
